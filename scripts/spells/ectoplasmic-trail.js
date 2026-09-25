@@ -1,4 +1,5 @@
 import { LOG, MIGRATION_VERSION, MODULE_ID } from "../core/constants.js";
+import { applyEffects, removeEffects } from "../core/native.js";
 import { createDamageCard } from "../core/damage-card.js";
 import { onItemUse } from "../core/hooks.js";
 import { isActiveGM, migrated } from "../core/utils.js";
@@ -104,10 +105,10 @@ async function coverWithEctoplasm(caster, spellUuid, tokens) {
     try {
       if ( existing ) {
         if ( target.isOwner ) await existing.delete();
-        else await globalThis.MidiQOL?.removeEffects?.({ actorUuid: target.uuid, effects: [existing.id] });
+        else await removeEffects(target, [existing.id]);
       }
       if ( target.isOwner ) await target.createEmbeddedDocuments("ActiveEffect", [effect]);
-      else await globalThis.MidiQOL?.createEffects?.({ actorUuid: target.uuid, effects: [effect], options: {} });
+      else await applyEffects(target, [effect]);
       covered.push(token.name);
     } catch(err) {
       console.error(`${LOG} Ectoplasmic Trail: ${token.name}`, err);
@@ -136,7 +137,7 @@ async function deleteEffects(actor, ids) {
   if ( !ids.length ) return;
   try {
     if ( actor.isOwner ) await actor.deleteEmbeddedDocuments("ActiveEffect", ids);
-    else await globalThis.MidiQOL?.removeEffects?.({ actorUuid: actor.uuid, effects: ids });
+    else await removeEffects(actor, ids);
   } catch(err) {
     console.error(`${LOG} Ectoplasmic Trail: снятие эффектов у ${actor.name}`, err);
   }

@@ -1,4 +1,5 @@
 import { LOG } from "../core/constants.js";
+import { removeEffects } from "../core/native.js";
 import { onItemUse } from "../core/hooks.js";
 
 /*
@@ -39,7 +40,7 @@ async function restore(activity) {
 
   const ids = target.effects.filter(e => e.statuses?.has(chosen)).map(e => e.id);
   if ( target.isOwner ) await target.deleteEmbeddedDocuments("ActiveEffect", ids);
-  else await globalThis.MidiQOL?.removeEffects?.({ actorUuid: target.uuid, effects: ids });
+  else await removeEffects(target, ids);
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: caster }),
     content: `<p>Lesser Restoration: с <strong>${tokens[0].name}</strong> снято состояние «${conditionLabel(chosen)}».</p>` });
 }

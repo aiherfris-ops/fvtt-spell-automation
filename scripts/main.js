@@ -1,6 +1,7 @@
 import { LOG } from "./core/constants.js";
 import { createDamageCard, installDamageCard, registerDamageCardSettings } from "./core/damage-card.js";
 import { registerMigrationSettings } from "./core/migration-scope.js";
+import { installEffectsQuery, installRollFlags, midiActive } from "./core/native.js";
 import { AutomationRegistry } from "./core/registry.js";
 import spells from "./spells/index.js";
 import { installTeleportCircle } from "./tools/teleport-circle/index.js";
@@ -14,12 +15,17 @@ const registry = new AutomationRegistry(spells);
 
 Hooks.once("init", () => {
   registerDamageCardSettings();
+  installEffectsQuery();
   registerMigrationSettings();
   registry.registerSettings();
 });
 
 // Настройки мира доступны с setup — регистрируем хуки только включённых заклинаний
-Hooks.once("setup", () => registry.registerHooks());
+Hooks.once("setup", () => {
+  registry.registerHooks();
+  // Без midi преимущество и помеху от эффектов заклинаний учитывает сам модуль
+  if (!midiActive()) installRollFlags();
+});
 
 // Кнопки «Применить» на уже созданных карточках должны работать, даже если заклинание выключили
 installDamageCard();

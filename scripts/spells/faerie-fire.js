@@ -1,5 +1,6 @@
 import { LOG, MIGRATION_VERSION, MODULE_ID } from "../core/constants.js";
 import { migrated } from "../core/utils.js";
+import { GRANTS_ADVANTAGE } from "../core/native.js";
 
 /*
  * Faerie Fire (PHB 2024): атаки по подсвеченному существу — с преимуществом.
@@ -12,7 +13,7 @@ const GRANT_ADVANTAGE = "flags.midi-qol.grants.advantage.attack.all";
 export default {
   id: "faerie-fire",
   label: "Faerie Fire",
-  hint: "Атаки по подсвеченным существам — с преимуществом (флаг Midi на эффекте).",
+  hint: "Атаки по подсвеченным существам — с преимуществом.",
   identifiers: ["faerie-fire"],
 
   async migrate(actor) {
@@ -23,6 +24,8 @@ export default {
         const changes = foundry.utils.deepClone(effect.system.changes ?? []);
         if ( changes.some(c => c.key === GRANT_ADVANTAGE) ) continue;
         changes.push({ key: GRANT_ADVANTAGE, type: "override", value: "1", phase: "initial" });
+        // Без midi преимущество даёт собственный флаг (core/native.js)
+        changes.push({ key: GRANTS_ADVANTAGE, type: "override", value: "1", phase: "initial" });
         await effect.update({ "system.changes": changes });
       }
       await spell.setFlag(MODULE_ID, "faerieFireMigrated", MIGRATION_VERSION);

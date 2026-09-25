@@ -1,4 +1,5 @@
 import { LOG } from "../core/constants.js";
+import { removeEffects } from "../core/native.js";
 import { onItemUse } from "../core/hooks.js";
 
 /*
@@ -38,7 +39,7 @@ async function reduceExhaustion(actor) {
 async function removeStatus(actor, status) {
   const ids = actor.effects.filter(e => e.statuses?.has(status)).map(e => e.id);
   if (actor.isOwner) await actor.deleteEmbeddedDocuments("ActiveEffect", ids);
-  else await globalThis.MidiQOL?.removeEffects?.({ actorUuid: actor.uuid, effects: ids });
+  else await removeEffects(actor, ids);
 }
 
 async function restore(activity) {
