@@ -1,0 +1,29 @@
+{
+  "id": "spell-automation",
+  "title": "Spell Automation",
+  "description": "Автоматизация заклинаний dnd5e. Каждое заклинание — отдельный файл в scripts/spells/ и отдельный переключатель в настройках модуля. Сейчас: Goodberry, Magic Missile, Scorching Ray, Eldritch Blast, Jim's Magic Missile, Mirror Image, Shield, Hunter's Mark, Faerie Fire, Healing Word, Ray of Sickness, Shadow Blade. Инструменты ГМа: «Круг телепортации: прибытие» и «отбытие» (списком или сферой). Ядро: диспетчер использования заклинаний, кэш настроек, миграции по версии. Проверка данных — по спискам персонажей для каждого игрока (по умолчанию назначенный персонаж игроков в сети). Ectoplasmic Trail.",
+  "version": "3.7.0",
+  "authors": [
+    {
+      "name": "uniks"
+    }
+  ],
+  "compatibility": {
+    "minimum": "14",
+    "verified": "14"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "4"
+        }
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.js"
+  ]
+}
