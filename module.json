@@ -1,7 +1,7 @@
 {
   "id": "spell-automation",
   "title": "Spell Automation",
-  "description": "Автоматизация заклинаний dnd5e. Каждое заклинание — отдельный файл в scripts/spells/ и отдельный переключатель в настройках модуля. Сейчас: Goodberry, Magic Missile, Scorching Ray, Eldritch Blast, Jim's Magic Missile, Mirror Image, Shield, Hunter's Mark, Faerie Fire, Healing Word, Ray of Sickness, Shadow Blade. Инструменты ГМа: «Круг телепортации: прибытие» и «отбытие» (списком или сферой). Ядро: диспетчер использования заклинаний, кэш настроек, миграции по версии. Проверка данных — по спискам персонажей для каждого игрока (по умолчанию назначенный персонаж игроков в сети). Ectoplasmic Trail.",
+  "description": "Автоматизация заклинаний dnd5e. Каждое заклинание — отдельный файл в scripts/spells/ и отдельный переключатель в настройках модуля. Сейчас: Goodberry, Magic Missile, Scorching Ray, Eldritch Blast, Jim's Magic Missile, Mirror Image, Shield, Hunter's Mark, Faerie Fire, Healing Word, Ray of Sickness, Shadow Blade. Инструменты ГМа: «Круг телепортации: прибытие» и «отбытие» (списком или сферой). Ядро: диспетчер использования заклинаний, кэш настроек, миграции по версии. Проверка данных — по спискам персонажей для каждого игрока (по умолчанию назначенный персонаж игроков в сети). Ectoplasmic Trail. Эта сборка рассчитана на midi-qol и без него не работает.",
   "version": "3.7.0",
   "authors": [
     {
@@ -19,6 +19,15 @@
         "type": "system",
         "compatibility": {
           "minimum": "4"
+        }
+      }
+    ],
+    "requires": [
+      {
+        "id": "midi-qol",
+        "type": "module",
+        "compatibility": {
+          "minimum": "14.6.0"
         }
       }
     ]

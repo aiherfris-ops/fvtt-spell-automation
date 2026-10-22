@@ -1,5 +1,4 @@
 import { MODULE_ID } from "./constants.js";
-import { midiActive } from "./native.js";
 import { escapeHtml } from "./utils.js";
 
 /**
@@ -73,14 +72,10 @@ function midiAutoApply() {
   }
 }
 
-/** Без midi настройка «как в midi» означает автоматическое применение: карточка и так наша */
-const defaultAutoApply = () => !midiActive();
-
 function shouldAutoApply(actor) {
   const mode = game.settings.get(MODULE_ID, AUTO_APPLY_SETTING);
   if ( mode === "always" ) return true;
   if ( mode === "never" ) return false;
-  if ( !midiActive() ) return defaultAutoApply();
   const midi = midiAutoApply();
   if ( midi === "yesCardNPC" ) return actor?.type === "npc";
   return midi.startsWith("yes");

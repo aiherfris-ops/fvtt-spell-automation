@@ -1,6 +1,5 @@
 import { LOG, MODULE_ID } from "../core/constants.js";
 import { onItemUse } from "../core/hooks.js";
-import { midiActive, onAttacked } from "../core/native.js";
 import { matchesSpell } from "../core/utils.js";
 
 /*
@@ -80,8 +79,6 @@ export default {
     onItemUse("mirror-image", (activity) => {
       if ( activity.item.actor ) castMirrorImage(activity.item).catch(err => console.error(`${LOG} Mirror Image:`, err));
     });
-    if (midiActive()) Hooks.on("midi-qol.AttackRollComplete", checkDuplicates);
-    // Без midi: проверяем копии, когда атакуют носителя эффекта
-    else onAttacked((actor, { roll, token }) => checkDuplicates({ actor, targets: [token], attackRoll: roll, attackTotal: roll?.total }));
+    Hooks.on("midi-qol.AttackRollComplete", checkDuplicates);
   },
 };

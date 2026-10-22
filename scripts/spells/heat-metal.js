@@ -1,7 +1,6 @@
 import { LOG, MIGRATION_VERSION, MODULE_ID } from "../core/constants.js";
 import { onItemUse } from "../core/hooks.js";
 import { migrated } from "../core/utils.js";
-import { ATTACK_DISADVANTAGE, CHECK_DISADVANTAGE } from "../core/native.js";
 
 /*
  * Heat Metal (PHB 2024), 2 круг, концентрация. Раскалённый металлический предмет: 2d8 огнём при сотворении
@@ -59,9 +58,6 @@ export default {
       const changes = [
         { key: "flags.midi-qol.disadvantage.attack.all", type: "override", value: "1", phase: "initial" },
         { key: "flags.midi-qol.disadvantage.ability.check.all", type: "override", value: "1", phase: "initial" },
-        // Без midi помеху даёт учёт собственных флагов (core/native.js)
-        { key: ATTACK_DISADVANTAGE, type: "override", value: "1", phase: "initial" },
-        { key: CHECK_DISADVANTAGE, type: "override", value: "1", phase: "initial" },
       ];
       const description = "<p>Раскалённый металл: помеха на броски атаки и проверки характеристик "
         + "до начала следующего хода заклинателя. Если существо выронило предмет — удалите эффект.</p>";

@@ -1,5 +1,5 @@
 import { LOG } from "../core/constants.js";
-import { removeEffects } from "../core/native.js";
+import { removeEffects } from "../core/midi.js";
 import { onItemUse } from "../core/hooks.js";
 
 /*

@@ -1,7 +1,6 @@
 import { createDamageCard } from "../core/damage-card.js";
 import { escapeHtml, getSourceToken, matchesSpell, playAnimationSequence, playSpellAnimation } from "../core/utils.js";
 import { isShielded } from "./shield.js";
-import { midiActive, patchRollDamage } from "../core/native.js";
 
 /* Magic Missile: распределение дротиков по целям, один бросок 1d4+1 на все, Shield обнуляет урон */
 
@@ -85,21 +84,11 @@ export default {
   hint: "Распределение дротиков по целям вместо одного броска на всех; учитывает Shield.",
 
   register() {
-    if ( midiActive() ) {
-      // midi-qol вызывает этот хук вместо броска урона — заменяем общий бросок своим распределением
-      Hooks.on("midi-qol.preDamageRoll", (workflow, activity) => {
-        if ( !matchesSpell(activity?.item, SPELL) ) return true;
-        castMagicMissile(workflow, activity);
-        return false;
-      });
-      return;
-    }
-    // Без midi перехватываем сам бросок урона: обычный бросок отменяется, дротики считаются отдельно
-    patchRollDamage(async (activity, config) => {
-      if ( !matchesSpell(activity?.item, SPELL) ) return false;
-      const scaling = Math.max(0, (config?.scaling ?? activity.getRollData?.()?.item?.level ?? 1) - 1);
-      await castMagicMissile({ castData: { scaling }, targets: game.user.targets }, activity);
-      return true;
+    // midi-qol вызывает этот хук вместо броска урона — заменяем общий бросок своим распределением
+    Hooks.on("midi-qol.preDamageRoll", (workflow, activity) => {
+      if ( !matchesSpell(activity?.item, SPELL) ) return true;
+      castMagicMissile(workflow, activity);
+      return false;
     });
   },
 };
